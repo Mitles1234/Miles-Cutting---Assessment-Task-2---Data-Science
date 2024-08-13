@@ -4,22 +4,24 @@ import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
-#----Global Variables----#
+#--- Global Variables ---
 quit = False
 
-#----Setup dataframe and query it here prior to creating visualisation and UI functions----#
+#--- Setting Up DataFrames---
+#--- Main Weather Dataframe ---
 Weather_df = pd.read_csv('data/Weather.csv')
 
 #--- Albury ---
+#--- Albury Weather ---
 Albury_Weather_df = Weather_df[Weather_df.Location == 'Albury']
-
-#--- Gusts ---
+#--- Albury Gusts ---
 Gusts_Albury_Weather_df = Albury_Weather_df[['Date', 'WindGustSpeed']]
-
-#--- Wind Speed ---
+#--- Albury Wind Speed ---
 WindSpeed_Albury_Weather_df = Albury_Weather_df[['Date', 'WindSpeed3pm']]
+#--- Albury Buildings ---
+Albury_Buildings_df = pd.read_csv('data/Albury Buildings.csv', skiprows=2)
 
-#print(WindSpeed_Albury_Weather_df)
+
 
 plt.plot(
                     Gusts_Albury_Weather_df['Date'],
