@@ -13,30 +13,31 @@ Weather_df = pd.read_csv('data/Weather.csv')
 Albury_Weather_df = Weather_df[Weather_df.Location == 'Albury']
 
 #--- Gusts ---
-Gusts_Albury_Weather_df = Albury_Weather_df[['Date', 'WindGustSpeed']]
+#Gusts_Albury_Weather_df = Albury_Weather_df[['Date', 'WindGustSpeed']]
 
 #--- Wind Speed ---
-WindSpeed_Albury_Weather_df = Albury_Weather_df[['Date', 'WindSpeed3pm']]
+WindSpeed_Albury_Weather_df = Albury_Weather_df[['Date', 'WindSpeed3pm', 'WindGustSpeed']]
 
 print(WindSpeed_Albury_Weather_df)
 
-'''Gusts_Albury_Weather_df.plot(
+WindSpeed_Albury_Weather_df.plot(
                     #kind='bar',
                     x='Date',
                     y= 'WindGustSpeed',
                     color='blue',
                     alpha=0.3,
-                    title='Gust Wind Speed in Albury'
-              )'''
+                    label='Gust Wind Speed'
+              )
 
 WindSpeed_Albury_Weather_df.plot(
                     #kind='bar',
                     x='Date',
                     y= 'WindSpeed3pm',
-                    color='blue',
+                    color='purple',
                     alpha=0.3,
-                    title='Wind Speed in Albury'
+                    label = 'Wind Speed'
               )
-
+plt.legend()
+plt.title('Wind Speed vs Gust Speed in Albury')
 plt.show()
 
