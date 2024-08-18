@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
+import requests
 
 #--- Global Variables ---
 quit = False
@@ -20,9 +21,15 @@ Gusts_Albury_Weather_df = Albury_Weather_df[['Date', 'WindGustSpeed']]
 WindSpeed_Albury_Weather_df = Albury_Weather_df[['Date', 'WindSpeed3pm']]
 #--- Albury Buildings ---
 Albury_Buildings_df = pd.read_csv('data/Albury Buildings.csv', skiprows=2)
+Albury_Buildings_df = Albury_Buildings_df.iloc[:-3]
 
+#Albury_Buildings_df.insert(4, 'Complete Total', [Albury_Buildings_df['Total'] + Albury_Buildings_df['Other']], 0)
+#Albury_Buildings_df['Complete Total'] = Albury_Buildings_df['Total'] + 
+Albury_Buildings_df.sum()
 
+print(Albury_Buildings_df)
 
+'''
 plt.plot(
                     Gusts_Albury_Weather_df['Date'],
                     Gusts_Albury_Weather_df['WindGustSpeed'],
@@ -45,3 +52,4 @@ plt.title('Wind Speed vs Gust Speed in Albury')
 plt.tight_layout()
 plt.show()
 
+'''
