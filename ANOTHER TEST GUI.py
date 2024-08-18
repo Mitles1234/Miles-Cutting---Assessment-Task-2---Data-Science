@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter as tk
+from threading import Thread
 
 #--- GUI Stuff I kinda Understand ---
 top = Tk()
@@ -69,18 +70,17 @@ DarkMode = Checkbutton(top, text = "Dark Mode", variable = DarkMode,  \
    width = 20, )
 
 #--- Text ---
-def Text():
-    global ChartColour1Text
-    ChartColour1Text = tk.Label(top, text=f'Chart Colour 1 : {ChartColour1Colour}')
-    top.after(1000,Text)
-
-Text()
-#--- Gui Order ---
-DarkMode.pack()
-ChartColour1Text.pack()
-ChartColour1.pack()
-label.pack()
 
 
-#--- Run GUI ---
-top.mainloop()
+  Text()
+
+def main():
+    #--- Gui Order ---
+    DarkMode.pack()
+    ChartColour1Text.pack()
+    ChartColour1.pack()
+    label.pack()
+
+
+    #--- Run GUI ---
+    top.mainloop()
