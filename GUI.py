@@ -31,7 +31,6 @@ Newcastle = False
 Penrith = False
 
 #- Settings -
-DarkMode = False
 ChartColour1 = 'red'
 ChartColour2 = 'blue'
 ChartColour3 = 'yellow'
@@ -147,6 +146,7 @@ notebook.add(frame4, text='Help')
 #--- Plotting Graphs ---
 def Graph():
     global Location, ChartColour1, ChartColour2, ChartColour3, Albury, CoffsHarbour, Newcastle, Penrith
+    
     fig, ax1 = plt.subplots()
 
     if Location == 'Albury':
