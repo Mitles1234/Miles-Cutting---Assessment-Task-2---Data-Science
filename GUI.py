@@ -47,6 +47,8 @@ ChartColour3 = 'yellow'
 #--- Plotting Graphs ---
 print('''
 def Graph():
+      
+    
     if Albury == True:
         if AlburyWindSpeed == True:
             plt.plot(
@@ -158,7 +160,11 @@ def Graph():
     if Albury == True:
         Location = 'Albury'
     elif CoffsHarbour == True:
-        Location = 'CoffsHarbour'
+        Location = 'Coffs Harbour'
+    elif NewCastle == True:
+        Location = 'Newcastle'
+      elif Penrith == True:
+        Location = 'Penrith'
     plt.title(f'Wind Speed vs Gust Speed in {Location}')
       
 

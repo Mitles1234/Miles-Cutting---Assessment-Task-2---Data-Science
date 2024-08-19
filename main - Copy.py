@@ -1,61 +1,27 @@
-#--- Imports ---
-import pandas as pd
 import matplotlib.pyplot as plt
-matplotlib.use("TkAgg")
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
 
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-from matplotlib.figure import Figure
+# Create some mock data
+t = np.arange(0.01, 10.0, 0.01)
+data1 = np.exp(t)
+data2 = np.sin(2 * np.pi * t)
 
-import tkinter as tk
-from tkinter import ttk
+fig, ax1 = plt.subplots()
 
-#--- Global Variables ---
-quit = False
 
-#--- Setting Up DataFrames---
-#--- Main Weather Dataframe ---
-Weather_df = pd.read_csv('data/Weather.csv')
+ax1.set_xlabel('time (s)')
 
-#--- Albury ---
-#--- Albury Weather ---
-Albury_Weather_df = Weather_df[Weather_df.Location == 'Albury']
-#--- Albury Gusts ---
-Gusts_Albury_Weather_df = Albury_Weather_df[['Date', 'WindGustSpeed']]
-#--- Albury Wind Speed ---
-WindSpeed_Albury_Weather_df = Albury_Weather_df[['Date', 'WindSpeed3pm']]
-#--- Albury Buildings ---
-Albury_Buildings_df = pd.read_csv('data/Albury Buildings.csv', skiprows=2)
-Albury_Buildings_df = Albury_Buildings_df.iloc[:-3]
+color = 'tab:red'
+ax1.set_ylabel('exp', color=color)
+ax1.plot(t, data1, color=color)
+ax1.tick_params(axis='y', labelcolor=color)
 
-#Albury_Buildings_df.insert(4, 'Complete Total', [Albury_Buildings_df['Total'] + Albury_Buildings_df['Other']], 0)
-#Albury_Buildings_df['Complete Total'] = Albury_Buildings_df['Total'] + 
-Albury_Buildings_df.sum()
+ax2 = ax1.twinx()  # instantiate a second Axes that shares the same x-axis
 
-print(Albury_Buildings_df)
+color = 'tab:blue'
+ax2.set_ylabel('sin', color=color)  # we already handled the x-label with ax1
+ax2.plot(t, data2, color=color)
+ax2.tick_params(axis='y', labelcolor=color)
 
-'''
-plt.plot(
-                    Gusts_Albury_Weather_df['Date'],
-                    Gusts_Albury_Weather_df['WindGustSpeed'],
-                    color='blue',
-                    alpha=0.3,
-                    label='Gust Wind Speed'
-              )
-
-plt.plot(
-                    WindSpeed_Albury_Weather_df['Date'],
-                    WindSpeed_Albury_Weather_df['WindSpeed3pm'],
-                    color='purple',
-                    alpha=0.3,
-                    label = 'Wind Speed'
-              )
-plt.legend()
-plt.xlabel("Date")
-plt.ylabel("Wind Speed (Km/h)")
-plt.title('Wind Speed vs Gust Speed in Albury')
-plt.tight_layout()
+fig.tight_layout()  # otherwise the right y-label is slightly clipped
 plt.show()
-
-'''
