@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 import matplotlib
 matplotlib.use("TkAgg") 
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
@@ -20,7 +20,7 @@ top.title('Affect of Buildings on Windspeed')
 Error = False
 #- Location -
 Location = 'No Location'
-ChoiceLocation = StringVar()
+ChoiceLocation = StringVar(value='Albury')
 
 #- Graphing Variables -
 ChoiceWindSpeed = BooleanVar()
@@ -156,9 +156,11 @@ notebook.add(frame3, text='Live Weather Data')
 notebook.add(frame4, text='Help')
 
 def Graph():
-    global Location, ChoiceChartColour1, ChartColour1, ChoiceChartColour2, ChartColour2, ChoiceChartColour3, ChartColour3, Albury, CoffsHarbour, Newcastle, Penrith, WindSpeed, ChoiceWindSpeed, GustSpeed, ChoiceGustSpeed, Buildings, ChoiceBuildings, Error
+    global Location, ChoiceChartColour1, ChartColour1, ChoiceChartColour2, ChartColour2, ChoiceChartColour3, ChartColour3, Albury, CoffsHarbour, Newcastle, Penrith, WindSpeed, ChoiceWindSpeed, GustSpeed, ChoiceGustSpeed, Buildings, ChoiceBuildings, fig, canvas
     
+    fig = Figure(figsize= (6.5, 5), dpi=100)
     fig, ax1 = plt.subplots()
+    
 
     Location = ChoiceLocation.get()
 
@@ -202,6 +204,7 @@ def Graph():
             )
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
+            plt.legend(loc='upper left')
 
         if GustSpeed == True:
             plt.plot(
@@ -213,6 +216,8 @@ def Graph():
             )
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
+            plt.legend(loc='upper left')
+
 
         if Buildings == True:
             ax2 = ax1.twinx()
@@ -225,6 +230,7 @@ def Graph():
             )
             ax2.set_ylabel('Quantity of Buildings', color=ChartColour3)
             ax2.tick_params(axis='y', labelcolor=ChartColour3)
+            plt.legend(loc='upper right')
 
     if CoffsHarbour == True:
         if WindSpeed == True:
@@ -237,6 +243,7 @@ def Graph():
             )
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
+            plt.legend(loc='upper left')
         if GustSpeed == True:
             ax1.plot(
                         Gusts_CoffsHarbour_Weather_df['Date'],
@@ -247,6 +254,7 @@ def Graph():
             )
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
+            plt.legend(loc='upper left')
 
         if Buildings == True:
             ax2 = ax1.twinx()
@@ -259,6 +267,7 @@ def Graph():
             )
             ax2.set_ylabel('Quantity of Buildings', color=ChartColour3)
             ax2.tick_params(axis='y', labelcolor=ChartColour3)
+            plt.legend(loc='upper right')
 
     if Newcastle == True:
         if WindSpeed == True:
@@ -271,6 +280,7 @@ def Graph():
             )
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
+            plt.legend(loc='upper left')
 
         if GustSpeed == True:
             ax1.plot(
@@ -282,6 +292,7 @@ def Graph():
             )
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
+            plt.legend(loc='upper left')
 
         if Buildings == True:
             ax2 = ax1.twinx()
@@ -294,6 +305,7 @@ def Graph():
             )
             ax2.set_ylabel('Quantity of Buildings', color=ChartColour3)
             ax2.tick_params(axis='y', labelcolor=ChartColour3)
+            plt.legend(loc='upper right')
 
     if Penrith == True:
         if WindSpeed == True:
@@ -306,6 +318,7 @@ def Graph():
             )
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
+            plt.legend(loc='upper left')
             
         if GustSpeed == True:
             ax1.plot(
@@ -317,6 +330,7 @@ def Graph():
             )
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
+            plt.legend(loc='upper left')
 
         if Buildings == True:
             ax2 = ax1.twinx()
@@ -329,31 +343,26 @@ def Graph():
             )
             ax2.set_ylabel('Quantity of Buildings', color=ChartColour3)
             ax2.tick_params(axis='y', labelcolor=ChartColour3)
-    print('''
+            plt.legend(loc='upper right')
     plt.title(f'Wind Speed vs Gust Speed in {Location}')
-    f = Figure(figsize=(5,5), dpi=100)
-    
-    canvas = FigureCanvasTkAgg(f,)
-    canvas.show()
+
+    canvas = FigureCanvasTkAgg(fig, master = frame1)
+    canvas.draw()
     canvas.get_tk_widget().place(x=50, y=50)
 
-    canvas._tkcanvas.place(x=50, y=50)
-    ''')
-
-    plt.show()
 
 def Home():
-    global Albury, CoffsHarbour, Newcastle, Penrith, Location, Windspeed, Gustspeed, Buildings
+    global Albury, CoffsHarbour, Newcastle, Penrith, Location, Windspeed, Gustspeed, Buildings, fig
     
     Albury = Radiobutton(frame1, text='Albury', variable=ChoiceLocation, value='Albury', cursor="hand2", command=Graph)
     CoffsHarbour = Radiobutton(frame1, text='Coffs Harbour', variable=ChoiceLocation, value='Coffs Harbour', cursor="hand2", command=Graph)
     Newcastle = Radiobutton(frame1, text='Newcastle', variable=ChoiceLocation, value='Newcastle', cursor="hand2", command=Graph)
     Penrith = Radiobutton(frame1, text='Penrith', variable=ChoiceLocation, value='Penrith', cursor="hand2", command=Graph)
 
-    Albury.place(x=700, y=50)
-    CoffsHarbour.place(x=700, y=75)
-    Newcastle.place(x=700, y=100)
-    Penrith.place(x=700, y=125)
+    Albury.place(x=750, y=50)
+    CoffsHarbour.place(x=750, y=75)
+    Newcastle.place(x=750, y=100)
+    Penrith.place(x=750, y=125)
 
 
     RefreshGraph = tk.Button(frame1, 
@@ -378,9 +387,20 @@ def Home():
     BuildingsCheck = Checkbutton(frame1, text = "Buildings", font=("Helvetica", 10, "bold"), 
                                  variable=ChoiceBuildings, onvalue=True, offvalue=False, width = 20, anchor='w')
 
-    WindSpeedCheck.place(x=700, y=200)
-    GustSpeedCheck.place(x=700, y=225)
-    BuildingsCheck.place(x=700, y=250)
+    WindSpeedCheck.place(x=750, y=200)
+    GustSpeedCheck.place(x=750, y=225)
+    BuildingsCheck.place(x=750, y=250)
+
+    toolbar = NavigationToolbar2Tk(canvas, 
+                                   frame1)
+    
+    toolbar.update()
+
+    canvas.get_tk_widget().place(x=50, y=50)
+
+    
+    
+    
 
     
 
@@ -447,6 +467,9 @@ def Settings():
 
 
 
+
+
+Graph()
 Settings()
 Home()
 
