@@ -8,7 +8,7 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationTool
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
-import os
+import requests
 
 
 #--- GUI Setup ---
@@ -143,17 +143,21 @@ frame1 = ttk.Frame(notebook, width=1920, height=1080)
 frame2 = ttk.Frame(notebook, width=1920, height=1080)
 frame3 = ttk.Frame(notebook, width=1920, height=1080)
 frame4 = ttk.Frame(notebook, width=1920, height=1080)
+frame5 = ttk.Frame(notebook, width=1920, height=1080)
 
 frame1.pack(fill='both', expand=True)
 frame2.pack(fill='both', expand=True)
 frame3.pack(fill='both', expand=True)
 frame4.pack(fill='both', expand=True)
+frame5.pack(fill='both', expand=True)
 
 #--- Notebook ---
 notebook.add(frame1, text='Home')
 notebook.add(frame2, text='Settings')
 notebook.add(frame3, text='Live Weather Data')
 notebook.add(frame4, text='Help')
+notebook.add(frame5, text='Data Sets')
+
 
 def Graph():
     global Location, ChoiceChartColour1, ChartColour1, ChoiceChartColour2, ChartColour2, ChoiceChartColour3, ChartColour3, Albury, CoffsHarbour, Newcastle, Penrith, WindSpeed, ChoiceWindSpeed, GustSpeed, ChoiceGustSpeed, Buildings, ChoiceBuildings, fig, canvas
@@ -350,7 +354,6 @@ def Graph():
     canvas.draw()
     canvas.get_tk_widget().place(x=50, y=50)
 
-
 def Home():
     global Albury, CoffsHarbour, Newcastle, Penrith, Location, Windspeed, Gustspeed, Buildings, fig
     
@@ -378,7 +381,7 @@ def Home():
                    pady=5,
                    width=15,
                    wraplength=300)
-    RefreshGraph.place(x=350, y=600)
+    RefreshGraph.place(x=300, y=600)
         
     WindSpeedCheck = Checkbutton(frame1, text = "Wind Speed", font=("Helvetica", 10, "bold"), 
                                  variable=ChoiceWindSpeed, onvalue=True, offvalue=False, width = 20, anchor='w')
@@ -397,12 +400,6 @@ def Home():
     toolbar.update()
 
     canvas.get_tk_widget().place(x=50, y=50)
-
-    
-    
-    
-
-    
 
 def Settings():
     #--- Globalise Variables ---
@@ -464,13 +461,85 @@ def Settings():
     ChartColour3Magenta.place(x=50, y=625)
     ChartColour3Black.place(x=50, y=650)
 
+def LiveWeather():
+      
+    
+    def printInput(): 
+        global weather_data, api_key, weather, temp, wind, wind_direction_abr
+        api_key = 'a3a62c3dd107f25e273aca6be5877882' 
+        location = inputtxt.get(1.0, "end-1c") 
+        lbl.config(text = "Location: "+ location) 
+        weather_data = requests.get(
+        f"https://api.openweathermap.org/data/2.5/weather?q={location}&units=metric&APPID={api_key}"
+        )
+        def weather():
+            global weather, temp, weather_data
+            weather = str(weather_data.json()['weather'][0]['main'])
+            temp = round(weather_data.json()['main']['temp'])
 
+        def wind():
+            global wind, wind_direction_abr, weather_data
+            wind = round((weather_data.json()['wind']['speed'] * 1.944))
+            wind_direction_deg = weather_data.json()['wind']['deg']
+            if wind == 0:
+                wind_direction_abr = 'No Wind'
+            elif 0 <= wind_direction_deg <= 22.5 or 337.5 <= wind_direction_deg <= 360:
+                wind_direction_abr = 'N'
+            elif 22.5 <= wind_direction_deg <= 67.5:
+                wind_direction_abr = 'NE'
+            elif 67.5 <= wind_direction_deg <= 112.5:
+                wind_direction_abr = 'E'
+            elif 112.5 <= wind_direction_deg <= 157.5:
+                wind_direction_abr = 'SE'
+            elif 157.5 <= wind_direction_deg <= 202.5:
+                wind_direction_abr = 'S'
+            elif 202.5 <= wind_direction_deg <= 247.5:
+                wind_direction_abr = 'SW'
+            elif 247.5 <= wind_direction_deg <= 292.5:
+                wind_direction_abr = 'W'
+            elif 292.5 <= wind_direction_deg <= 337.5:
+                wind_direction_abr = 'NW'
+            else:
+                wind_direction_abr = 'Error'
 
+        if weather_data.json()['cod'] == '404':
+            LocationNotFound = tk.Label(text = "Location Not Found")
+            LocationNotFound.place(x=10, y=50)
+        else:
+            weather()
+            wind()
 
+            weatherprint = tk.Label(text = f"The weather in {location} is: {weather}                                                ")
+            tempprint = tk.Label(text = f"The temperature in {location} is: {temp}ºC                                                ")
+            windspeedprint = tk.Label(text = f"Wind: {wind} Knots                                                                   ")
+            winddirectionprint = tk.Label(text = f"Wind Direction: {wind_direction_abr}                                             ")
 
+            weatherprint.place(x=10, y=50)
+            tempprint.place(x=10, y=75)
+            windspeedprint.place(x=10, y=100)
+            winddirectionprint.place(x=10, y=125)
+
+    # TextBox Creation 
+    inputtxt = tk.Text(frame3, 
+                    height = 5, 
+                    width = 20) 
+    
+    inputtxt.place(x=10, y=155) 
+    
+    # Button Creation 
+    printButton = tk.Button(frame3, 
+                            text = "Print",  
+                            command = printInput) 
+    printButton.place(x=72.5, y=255) 
+    
+    # Label Creation 
+    lbl = tk.Label(frame3, text = "Enter Location: ") 
+    lbl.place(x=10, y=130) 
+    frame3.mainloop() 
 
 Graph()
 Settings()
 Home()
+LiveWeather()
 
 top.mainloop()
