@@ -51,6 +51,7 @@ ChartColour2 = 'yellow'
 ChartColour3 = 'blue'
 
 #--- Data Frames ---
+#- Weather -
 Weather_df = pd.read_csv('data/Weather.csv')
 
 #--- Albury ---
@@ -143,28 +144,33 @@ frame1 = ttk.Frame(notebook, width=1920, height=1080)
 frame2 = ttk.Frame(notebook, width=1920, height=1080)
 frame3 = ttk.Frame(notebook, width=1920, height=1080)
 frame4 = ttk.Frame(notebook, width=1920, height=1080)
-frame5 = ttk.Frame(notebook, width=1920, height=1080)
+
+
 
 frame1.pack(fill='both', expand=True)
 frame2.pack(fill='both', expand=True)
 frame3.pack(fill='both', expand=True)
 frame4.pack(fill='both', expand=True)
-frame5.pack(fill='both', expand=True)
+
+
 
 #--- Notebook ---
 notebook.add(frame1, text='Home')
 notebook.add(frame2, text='Settings')
 notebook.add(frame3, text='Live Weather Data')
 notebook.add(frame4, text='Help')
-notebook.add(frame5, text='Data Sets')
+
 
 
 def Graph():
     global Location, ChoiceChartColour1, ChartColour1, ChoiceChartColour2, ChartColour2, ChoiceChartColour3, ChartColour3, Albury, CoffsHarbour, Newcastle, Penrith, WindSpeed, ChoiceWindSpeed, GustSpeed, ChoiceGustSpeed, Buildings, ChoiceBuildings, fig, canvas
     
+    #Setting Up Graph
     fig = Figure(figsize= (6.5, 5), dpi=100)
     fig, ax1 = plt.subplots()
     
+    #Sets Location from List into a Format that can be understood better by the rest of the program
+    Title = f'{Location}: '
 
     Location = ChoiceLocation.get()
 
@@ -197,6 +203,7 @@ def Graph():
     ChartColour2 = ChoiceChartColour2.get()
     ChartColour3 = ChoiceChartColour3.get()
 
+    # Adds the selected variables all to the same graph
     if Albury == True:
         if WindSpeed == True:
             ax1.plot(
@@ -209,6 +216,7 @@ def Graph():
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
             plt.legend(loc='upper left')
+            Title = str(Title) + str(' Wind Speed')
 
         if GustSpeed == True:
             plt.plot(
@@ -221,7 +229,7 @@ def Graph():
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
             plt.legend(loc='upper left')
-
+            Title = str(Title) + str(' Gust Speed')
 
         if Buildings == True:
             ax2 = ax1.twinx()
@@ -235,6 +243,7 @@ def Graph():
             ax2.set_ylabel('Quantity of Buildings', color=ChartColour3)
             ax2.tick_params(axis='y', labelcolor=ChartColour3)
             plt.legend(loc='upper right')
+            Title = str(Title) + str(' Buildings')
 
     if CoffsHarbour == True:
         if WindSpeed == True:
@@ -248,6 +257,8 @@ def Graph():
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
             plt.legend(loc='upper left')
+            Title = str(Title) + str(' Wind Speed')
+
         if GustSpeed == True:
             ax1.plot(
                         Gusts_CoffsHarbour_Weather_df['Date'],
@@ -259,6 +270,7 @@ def Graph():
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
             plt.legend(loc='upper left')
+            Title = str(Title) + str(' Gust Speed')
 
         if Buildings == True:
             ax2 = ax1.twinx()
@@ -272,6 +284,7 @@ def Graph():
             ax2.set_ylabel('Quantity of Buildings', color=ChartColour3)
             ax2.tick_params(axis='y', labelcolor=ChartColour3)
             plt.legend(loc='upper right')
+            Title = str(Title) + str(' Buildings')
 
     if Newcastle == True:
         if WindSpeed == True:
@@ -285,6 +298,7 @@ def Graph():
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
             plt.legend(loc='upper left')
+            Title = str(Title) + str(' Wind Speed')
 
         if GustSpeed == True:
             ax1.plot(
@@ -297,6 +311,7 @@ def Graph():
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
             plt.legend(loc='upper left')
+            Title = str(Title) + str(' Gust Speed')
 
         if Buildings == True:
             ax2 = ax1.twinx()
@@ -310,6 +325,7 @@ def Graph():
             ax2.set_ylabel('Quantity of Buildings', color=ChartColour3)
             ax2.tick_params(axis='y', labelcolor=ChartColour3)
             plt.legend(loc='upper right')
+            Title = str(Title) + str(' Buildings')
 
     if Penrith == True:
         if WindSpeed == True:
@@ -323,6 +339,7 @@ def Graph():
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
             plt.legend(loc='upper left')
+            Title = str(Title) + str(' Wind Speed')
             
         if GustSpeed == True:
             ax1.plot(
@@ -335,6 +352,7 @@ def Graph():
             ax1.set_ylabel('Wind Speed (Km/h)', color='black')
             ax1.tick_params(axis='y', labelcolor='black')
             plt.legend(loc='upper left')
+            Title = str(Title) + str(' Gust Speed')
 
         if Buildings == True:
             ax2 = ax1.twinx()
@@ -348,7 +366,9 @@ def Graph():
             ax2.set_ylabel('Quantity of Buildings', color=ChartColour3)
             ax2.tick_params(axis='y', labelcolor=ChartColour3)
             plt.legend(loc='upper right')
-    plt.title(f'Wind Speed vs Gust Speed in {Location}')
+            Title = str(Title) + str(' Buildings')
+
+    plt.title(Title)
 
     canvas = FigureCanvasTkAgg(fig, master = frame1)
     canvas.draw()
@@ -537,9 +557,14 @@ def LiveWeather():
     lbl.place(x=10, y=130) 
     frame3.mainloop() 
 
+
+
+    
+
 Graph()
 Settings()
 Home()
 LiveWeather()
+
 
 top.mainloop()
