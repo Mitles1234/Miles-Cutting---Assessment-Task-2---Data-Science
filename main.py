@@ -143,24 +143,15 @@ notebook.pack(pady=15, expand=True)
 frame1 = ttk.Frame(notebook, width=1920, height=1080)
 frame2 = ttk.Frame(notebook, width=1920, height=1080)
 frame3 = ttk.Frame(notebook, width=1920, height=1080)
-frame4 = ttk.Frame(notebook, width=1920, height=1080)
-
-
 
 frame1.pack(fill='both', expand=True)
 frame2.pack(fill='both', expand=True)
 frame3.pack(fill='both', expand=True)
-frame4.pack(fill='both', expand=True)
-
-
 
 #--- Notebook ---
 notebook.add(frame1, text='Home')
 notebook.add(frame2, text='Settings')
 notebook.add(frame3, text='Live Weather Data')
-notebook.add(frame4, text='Help')
-
-
 
 def Graph():
     global Location, ChoiceChartColour1, ChartColour1, ChoiceChartColour2, ChartColour2, ChoiceChartColour3, ChartColour3, Albury, CoffsHarbour, Newcastle, Penrith, WindSpeed, ChoiceWindSpeed, GustSpeed, ChoiceGustSpeed, Buildings, ChoiceBuildings, fig, canvas
@@ -529,10 +520,10 @@ def LiveWeather():
             weather()
             wind()
 
-            weatherprint = tk.Label(text = f"The weather in {location} is: {weather}                                                ")
-            tempprint = tk.Label(text = f"The temperature in {location} is: {temp}ºC                                                ")
-            windspeedprint = tk.Label(text = f"Wind: {wind} Knots                                                                   ")
-            winddirectionprint = tk.Label(text = f"Wind Direction: {wind_direction_abr}                                             ")
+            weatherprint = tk.Label(frame3, text = f"The weather in {location} is: {weather}                                                ")
+            tempprint = tk.Label(frame3, text = f"The temperature in {location} is: {temp}ºC                                                ")
+            windspeedprint = tk.Label(frame3, text = f"Wind: {wind} Knots                                                                   ")
+            winddirectionprint = tk.Label(frame3, text = f"Wind Direction: {wind_direction_abr}                                             ")
 
             weatherprint.place(x=10, y=50)
             tempprint.place(x=10, y=75)
@@ -544,20 +535,18 @@ def LiveWeather():
                     height = 5, 
                     width = 20) 
     
-    inputtxt.place(x=10, y=155) 
+    inputtxt.place(x=10, y=180) 
     
     # Button Creation 
     printButton = tk.Button(frame3, 
                             text = "Print",  
                             command = printInput) 
-    printButton.place(x=72.5, y=255) 
+    printButton.place(x=72.5, y=280) 
     
     # Label Creation 
     lbl = tk.Label(frame3, text = "Enter Location: ") 
-    lbl.place(x=10, y=130) 
+    lbl.place(x=10, y=155) 
     frame3.mainloop() 
-
-
 
     
 
